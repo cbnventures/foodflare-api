@@ -1,0 +1,55 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true,
+        "jasmine": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:jasmine/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "jasmine"
+    ],
+    "rules": {
+        "no-console": [
+            "off"
+        ],
+        "max-len": [
+            "off"
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "src/types/claudia-api-builder/index.d.ts",
+                "src/types/foodflare-api/index.d.ts"
+            ],
+            "extends": [
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "plugins": [
+                "@typescript-eslint"
+            ],
+            "rules": {
+                "no-useless-constructor": [
+                    "off"
+                ],
+                "@typescript-eslint/no-useless-constructor": [
+                    "error"
+                ]
+            }
+        }
+    ]
+}

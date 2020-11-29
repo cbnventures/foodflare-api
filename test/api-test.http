@@ -1,0 +1,107 @@
+POST {{url}}/auth/session
+X-Api-Key: {{api_key}}
+Origin: foodflare.app
+
+{
+  "type": "app"
+}
+
+> {% client.global.set("auth_token", response.body['info']['token']); %}
+
+###
+
+POST {{url}}/fusion/search
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "term": "food",
+  "latitude": 40.714224,
+  "longitude": -73.961452,
+  "category": ["restaurant"],
+  "sort": "distance",
+  "price": [1, 2, 3, 4],
+  "min_rating": 0,
+  "open_now": true
+}
+
+###
+
+POST {{url}}/fusion/details
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "id": "IT7fmvejMygNXsV71jvZtg",
+  "latitude": 40.714224,
+  "longitude": -73.961452
+}
+
+###
+
+POST {{url}}/fusion/reviews
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "id": "IT7fmvejMygNXsV71jvZtg"
+}
+
+###
+
+POST {{url}}/geocode/locate
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "latitude": 40.714224,
+  "longitude": -73.961452
+}
+
+###
+
+POST {{url}}/places/search
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "term": "food",
+  "latitude": 40.714224,
+  "longitude": -73.961452,
+  "category": ["restaurant"],
+  "sort": "distance",
+  "price": [1, 2, 3, 4],
+  "min_rating": 0,
+  "open_now": true
+}
+
+###
+
+POST {{url}}/places/details
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "id": "ChIJ2UmXRmBZwokRMr_Dr9yAykI",
+  "latitude": 40.714224,
+  "longitude": -73.961452
+}
+
+###
+
+POST {{url}}/places/photo
+X-Api-Key: {{api_key}}
+Authorization: Bearer {{auth_token}}
+Origin: foodflare.app
+
+{
+  "reference": "CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0",
+  "max_width": 128,
+  "max_height": 128
+}

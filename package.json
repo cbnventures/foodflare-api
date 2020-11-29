@@ -1,0 +1,73 @@
+{
+    "name": "foodflare-api",
+    "displayName": "FoodFlare API",
+    "version": "1.0.0",
+    "description": "A food-finder API gateway designed for the FoodFlare app",
+    "main": "index.js",
+    "private": true,
+    "scripts": {
+        "create": "npm run create:dev && npm run create:prod",
+        "create:dev": "claudia create --name foodflareApi --version dev --region us-east-1 --api-module index --memory 256 --timeout 20 --profile foodflare",
+        "create:prod": "claudia set-version --version prod --profile foodflare",
+        "update": "npm run update:dev && npm run update:prod",
+        "update:dev": "claudia update --version dev --profile foodflare",
+        "update:prod": "claudia update --version prod --profile foodflare",
+        "destroy": "claudia destroy --profile foodflare",
+        "test": "jasmine"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/cbnventures/foodflare-api.git"
+    },
+    "funding": {
+        "type": "paypal",
+        "url": "https://www.paypal.me/cbnventures"
+    },
+    "keywords": [
+        "foodflare",
+        "food",
+        "api",
+        "claudia",
+        "aws",
+        "lambda",
+        "api-gateway"
+    ],
+    "author": "CBN Ventures LLC",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/cbnventures/foodflare-api/issues"
+    },
+    "files": [
+        ".env",
+        "*.js",
+        "certs/*.pem",
+        "src/**/*.js"
+    ],
+    "homepage": "https://github.com/cbnventures/foodflare-api#readme",
+    "engines": {
+        "node": ">=12.0.0",
+        "claudia": ">=5.12.0"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "claudia-api-builder": "^4.1.2",
+        "dotenv": "^8.2.0",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.20",
+        "moment-timezone": "^0.5.32"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.64",
+        "@types/node": "^13.13.33",
+        "@typescript-eslint/eslint-plugin": "^2.34.0",
+        "@typescript-eslint/parser": "^2.34.0",
+        "aws-lambda": "^1.0.6",
+        "claudia": "^5.12.0",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jasmine": "^4.1.1",
+        "jasmine": "^3.6.3",
+        "typescript": "^3.9.7"
+    }
+}
