@@ -1,4 +1,4 @@
-// Type definitions for foodflare-api 1.0.0
+// Type definitions for foodflare-api 1.0.1
 // Project: https://github.com/cbnventures/foodflare-api
 // Definitions by: Jacky Liang <https://github.com/mrjackyliang>
 // TypeScript Version: 3.9.7
@@ -12,7 +12,7 @@ export type Payload =
   | PayloadReviews;
 
 export interface PayloadAuth {
-  type: 'web' | 'app';
+  platform: 'web' | 'mobile';
 }
 
 export interface PayloadCoordinates {

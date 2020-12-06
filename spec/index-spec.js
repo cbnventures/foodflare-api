@@ -69,10 +69,10 @@ describe('Route handlers', () => {
     const validRequests = [
       {
         route: '/auth/session',
-        test: 'payload with "app" as identifier',
+        test: 'payload with "mobile" as identifier',
         expect: 'a token',
         payload: {
-          type: 'app',
+          platform: 'mobile',
         },
         types: ['empty', 'malicious', 'auth'],
         axiosHeaders: null,
@@ -87,7 +87,7 @@ describe('Route handlers', () => {
         test: 'payload with "web" as identifier',
         expect: 'a token',
         payload: {
-          type: 'web',
+          platform: 'web',
         },
         types: ['empty', 'malicious', 'auth'],
         axiosHeaders: null,
@@ -325,6 +325,52 @@ describe('Route handlers', () => {
             rating: 4.5,
             review_count: 59,
             distance: 109.55824783264184,
+          },
+        ],
+      },
+      {
+        route: '/fusion/search',
+        test: 'payload with search request filled with nilled values',
+        expect: 'a set of businesses filled with default values',
+        payload: {
+          term: 'food',
+          latitude: 0,
+          longitude: 0,
+          category: ['restaurant'],
+          sort: 'distance',
+          price: [1, 2, 3, 4],
+          min_rating: 0,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search', 'fusion-search'],
+        axiosHeaders: null,
+        axiosData: {
+          businesses: [
+            {
+              id: null,
+              name: null,
+              review_count: null,
+              rating: null,
+              coordinates: {
+                latitude: null,
+                longitude: null,
+              },
+              price: null,
+            },
+          ],
+        },
+        bufferOutput: null,
+        jwtToken: null,
+        responseAction: 'FUSION_SEARCH',
+        responseData: [
+          {
+            source: 'yelp',
+            id: '',
+            name: '',
+            price: 0,
+            rating: 0,
+            review_count: 0,
+            distance: 0,
           },
         ],
       },
@@ -755,6 +801,66 @@ describe('Route handlers', () => {
         },
       },
       {
+        route: '/fusion/details',
+        test: 'payload with a business details request filled with nilled values',
+        expect: 'a business filled with default values',
+        payload: {
+          id: 'ABC123',
+          latitude: 0,
+          longitude: 0,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'details', 'fusion-details'],
+        axiosHeaders: null,
+        axiosData: {
+          id: null,
+          name: null,
+          url: null,
+          phone: null,
+          display_phone: null,
+          review_count: null,
+          categories: null,
+          rating: null,
+          location: {
+            display_address: null,
+          },
+          coordinates: {
+            latitude: null,
+            longitude: null,
+          },
+          photos: null,
+          price: null,
+          hours: null,
+          transactions: null,
+        },
+        bufferOutput: null,
+        jwtToken: null,
+        responseAction: 'FUSION_DETAILS',
+        responseData: {
+          source: 'yelp',
+          id: '',
+          name: '',
+          price: 0,
+          rating: 0,
+          review_count: 0,
+          categories: [],
+          services: [],
+          address: '',
+          coordinates: {
+            latitude: 0,
+            longitude: 0,
+          },
+          distance: 0,
+          url: '',
+          phone: {
+            display: '',
+            raw: '',
+          },
+          hours: {},
+          photos: [],
+          reviews: [],
+        },
+      },
+      {
         route: '/fusion/reviews',
         test: 'payload with reviews request',
         expect: 'a set of reviews',
@@ -836,9 +942,50 @@ describe('Route handlers', () => {
         },
       },
       {
+        route: '/fusion/reviews',
+        test: 'payload with reviews request filled with nilled values',
+        expect: 'a set of reviews filled with default values',
+        payload: {
+          id: 'ABC123',
+        },
+        types: ['empty', 'malicious', 'reviews', 'fusion-reviews'],
+        axiosHeaders: null,
+        axiosData: {
+          reviews: [
+            {
+              url: null,
+              text: null,
+              rating: null,
+              time_created: null,
+              user: {
+                image_url: null,
+                name: null,
+              },
+            },
+          ],
+        },
+        bufferOutput: null,
+        jwtToken: null,
+        responseAction: 'FUSION_REVIEWS',
+        responseData: {
+          reviews: [
+            {
+              text: '',
+              url: '',
+              rating: 0,
+              time: '',
+              user: {
+                name: '',
+                image_url: '',
+              },
+            },
+          ],
+        },
+      },
+      {
         route: '/geocode/locate',
         test: 'payload with negative coordinates',
-        expect: 'an empty response',
+        expect: 'a set of empty string values',
         payload: {
           latitude: -90,
           longitude: -180,
@@ -849,12 +996,18 @@ describe('Route handlers', () => {
         bufferOutput: null,
         jwtToken: null,
         responseAction: 'GEOCODE_LOCATE',
-        responseData: {},
+        responseData: {
+          neighborhood: '',
+          sublocality_level_1: '',
+          locality: '',
+          administrative_area_level_1: '',
+          country: '',
+        },
       },
       {
         route: '/geocode/locate',
         test: 'payload with positive coordinates',
-        expect: 'an empty response',
+        expect: 'a set of empty string values',
         payload: {
           latitude: 90,
           longitude: 180,
@@ -865,7 +1018,13 @@ describe('Route handlers', () => {
         bufferOutput: null,
         jwtToken: null,
         responseAction: 'GEOCODE_LOCATE',
-        responseData: {},
+        responseData: {
+          neighborhood: '',
+          sublocality_level_1: '',
+          locality: '',
+          administrative_area_level_1: '',
+          country: '',
+        },
       },
       {
         route: '/geocode/locate',
@@ -954,6 +1113,7 @@ describe('Route handlers', () => {
         responseData: {
           neighborhood: 'Williamsburg',
           sublocality_level_1: 'Brooklyn',
+          locality: '',
           administrative_area_level_1: 'New York',
           country: 'United States',
         },
@@ -1207,6 +1367,55 @@ describe('Route handlers', () => {
             rating: 4.2,
             review_count: 89,
             distance: 86.84426893665658,
+          },
+        ],
+      },
+      {
+        route: '/places/search',
+        test: 'payload with search request filled with nilled values',
+        expect: 'a set of places filled with default values',
+        payload: {
+          term: 'food',
+          latitude: 0,
+          longitude: 0,
+          category: ['restaurant'],
+          sort: 'distance',
+          price: [1, 2, 3, 4],
+          min_rating: 0,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search', 'places-search'],
+        axiosHeaders: null,
+        axiosData: {
+          results: [
+            {
+              geometry: {
+                location: {
+                  lat: null,
+                  lng: null,
+                },
+              },
+              name: null,
+              place_id: null,
+              price_level: null,
+              rating: null,
+              user_ratings_total: null,
+            },
+          ],
+          status: 'OK',
+        },
+        bufferOutput: null,
+        jwtToken: null,
+        responseAction: 'PLACES_SEARCH',
+        responseData: [
+          {
+            source: 'google',
+            id: '',
+            name: '',
+            price: 0,
+            rating: 0,
+            review_count: 0,
+            distance: 0,
           },
         ],
       },
@@ -1737,6 +1946,69 @@ describe('Route handlers', () => {
         },
       },
       {
+        route: '/places/details',
+        test: 'payload with a business details request filled with nilled values',
+        expect: 'a business filled with default values',
+        payload: {
+          id: 'ABC123',
+          latitude: 0,
+          longitude: 0,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'details', 'places-details'],
+        axiosHeaders: null,
+        axiosData: {
+          result: {
+            formatted_address: null,
+            formatted_phone_number: null,
+            geometry: {
+              location: {
+                lat: null,
+                lng: null,
+              },
+            },
+            international_phone_number: null,
+            name: null,
+            opening_hours: null,
+            photos: null,
+            place_id: null,
+            price_level: null,
+            rating: null,
+            reviews: null,
+            types: null,
+            url: null,
+            user_ratings_total: null,
+          },
+          status: 'OK',
+        },
+        bufferOutput: null,
+        jwtToken: null,
+        responseAction: 'PLACES_DETAILS',
+        responseData: {
+          source: 'google',
+          id: '',
+          name: '',
+          price: 0,
+          rating: 0,
+          review_count: 0,
+          categories: [],
+          services: [],
+          address: '',
+          coordinates: {
+            latitude: 0,
+            longitude: 0,
+          },
+          distance: 0,
+          url: '',
+          phone: {
+            display: '',
+            raw: '',
+          },
+          hours: {},
+          photos: [],
+          reviews: [],
+        },
+      },
+      {
         route: '/places/photo',
         test: 'payload with photo request',
         expect: 'a base64 encoded photo',
@@ -1931,14 +2203,14 @@ describe('Route handlers', () => {
         route: '/auth/session',
         test: 'payload with invalid type',
         payload: {
-          type: 'something',
+          platform: 'something',
         },
         types: ['empty', 'malicious', 'auth'],
         axiosResponse: null,
         responseAction: 'AUTHORIZATION',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "type" key does not match expression',
+          description: 'The "platform" value does not match expression',
         },
       },
       {
@@ -1988,7 +2260,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" key is not a finite number',
+          description: 'The "latitude" value is not a finite number',
         },
       },
       {
@@ -2009,7 +2281,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "longitude" key is not a finite number',
+          description: 'The "longitude" value is not a finite number',
         },
       },
       {
@@ -2030,7 +2302,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -2051,7 +2323,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -2072,7 +2344,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "term" key is empty or not a string',
+          description: 'The "term" value is empty or not a string',
         },
       },
       {
@@ -2093,7 +2365,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "term" key is empty or not a string',
+          description: 'The "term" value is empty or not a string',
         },
       },
       {
@@ -2114,7 +2386,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -2135,7 +2407,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -2156,7 +2428,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -2177,7 +2449,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -2198,7 +2470,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "sort" key does not match expression',
+          description: 'The "sort" value does not match expression',
         },
       },
       {
@@ -2219,7 +2491,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -2240,7 +2512,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -2261,7 +2533,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -2282,7 +2554,49 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
+        },
+      },
+      {
+        route: '/fusion/search',
+        test: 'payload with 0 in price array',
+        payload: {
+          latitude: 0,
+          longitude: 0,
+          term: 'something',
+          category: ['food', 'restaurant'],
+          sort: 'least_expensive',
+          price: [0, 1, 2, 3],
+          min_rating: 4.5,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search'],
+        axiosResponse: null,
+        responseAction: 'FUSION_SEARCH',
+        responseData: {
+          status: 'SYNTAX_ERROR',
+          description: 'The "price" value format is invalid',
+        },
+      },
+      {
+        route: '/fusion/search',
+        test: 'payload with 5 in price array',
+        payload: {
+          latitude: 0,
+          longitude: 0,
+          term: 'something',
+          category: ['food', 'restaurant'],
+          sort: 'least_expensive',
+          price: [2, 3, 4, 5],
+          min_rating: 4.5,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search'],
+        axiosResponse: null,
+        responseAction: 'FUSION_SEARCH',
+        responseData: {
+          status: 'SYNTAX_ERROR',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -2303,7 +2617,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "min_rating" key is not a number',
+          description: 'The "min_rating" value is not a number',
         },
       },
       {
@@ -2324,7 +2638,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "open_now" key is not a boolean',
+          description: 'The "open_now" value is not a boolean',
         },
       },
       {
@@ -2559,7 +2873,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" key is not a finite number',
+          description: 'The "latitude" value is not a finite number',
         },
       },
       {
@@ -2575,7 +2889,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "longitude" key is not a finite number',
+          description: 'The "longitude" value is not a finite number',
         },
       },
       {
@@ -2591,7 +2905,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -2607,7 +2921,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -2623,7 +2937,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -2639,7 +2953,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -2837,7 +3151,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_REVIEWS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -2851,7 +3165,7 @@ describe('Route handlers', () => {
         responseAction: 'FUSION_REVIEWS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -3036,7 +3350,7 @@ describe('Route handlers', () => {
         responseAction: 'GEOCODE_LOCATE',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" key is not a finite number',
+          description: 'The "latitude" value is not a finite number',
         },
       },
       {
@@ -3051,7 +3365,7 @@ describe('Route handlers', () => {
         responseAction: 'GEOCODE_LOCATE',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "longitude" key is not a finite number',
+          description: 'The "longitude" value is not a finite number',
         },
       },
       {
@@ -3066,7 +3380,7 @@ describe('Route handlers', () => {
         responseAction: 'GEOCODE_LOCATE',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -3081,7 +3395,7 @@ describe('Route handlers', () => {
         responseAction: 'GEOCODE_LOCATE',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -3326,7 +3640,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" key is not a finite number',
+          description: 'The "latitude" value is not a finite number',
         },
       },
       {
@@ -3347,7 +3661,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "longitude" key is not a finite number',
+          description: 'The "longitude" value is not a finite number',
         },
       },
       {
@@ -3368,7 +3682,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -3389,7 +3703,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -3410,7 +3724,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "term" key is empty or not a string',
+          description: 'The "term" value is empty or not a string',
         },
       },
       {
@@ -3431,7 +3745,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "term" key is empty or not a string',
+          description: 'The "term" value is empty or not a string',
         },
       },
       {
@@ -3452,7 +3766,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -3473,7 +3787,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -3494,7 +3808,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -3515,7 +3829,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "category" key is not a string[] or wrong size',
+          description: 'The "category" value is not a string[] or wrong size',
         },
       },
       {
@@ -3536,7 +3850,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "sort" key does not match expression',
+          description: 'The "sort" value does not match expression',
         },
       },
       {
@@ -3557,7 +3871,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -3578,7 +3892,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -3599,7 +3913,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -3620,7 +3934,49 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "price" key is not a finite number[] or wrong size',
+          description: 'The "price" value format is invalid',
+        },
+      },
+      {
+        route: '/places/search',
+        test: 'payload with 0 in price array',
+        payload: {
+          latitude: 0,
+          longitude: 0,
+          term: 'something',
+          category: ['food', 'restaurant'],
+          sort: 'distance',
+          price: [0, 1, 2, 3],
+          min_rating: 4.5,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search'],
+        axiosResponse: null,
+        responseAction: 'PLACES_SEARCH',
+        responseData: {
+          status: 'SYNTAX_ERROR',
+          description: 'The "price" value format is invalid',
+        },
+      },
+      {
+        route: '/places/search',
+        test: 'payload with 5 in price array',
+        payload: {
+          latitude: 0,
+          longitude: 0,
+          term: 'something',
+          category: ['food', 'restaurant'],
+          sort: 'distance',
+          price: [2, 3, 4, 5],
+          min_rating: 4.5,
+          open_now: true,
+        },
+        types: ['empty', 'malicious', 'coordinates', 'search'],
+        axiosResponse: null,
+        responseAction: 'PLACES_SEARCH',
+        responseData: {
+          status: 'SYNTAX_ERROR',
+          description: 'The "price" value format is invalid',
         },
       },
       {
@@ -3641,7 +3997,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "min_rating" key is not a number',
+          description: 'The "min_rating" value is not a number',
         },
       },
       {
@@ -3662,7 +4018,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_SEARCH',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "open_now" key is not a boolean',
+          description: 'The "open_now" value is not a boolean',
         },
       },
       {
@@ -3956,7 +4312,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" key is not a finite number',
+          description: 'The "latitude" value is not a finite number',
         },
       },
       {
@@ -3972,7 +4328,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "longitude" key is not a finite number',
+          description: 'The "longitude" value is not a finite number',
         },
       },
       {
@@ -3988,7 +4344,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -4004,7 +4360,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "latitude" or "longitude" key has exceeded the allowed value',
+          description: 'The "latitude" or "longitude" value has exceeded the allowed value',
         },
       },
       {
@@ -4020,7 +4376,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -4036,7 +4392,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_DETAILS',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "id" key is empty or not a string',
+          description: 'The "id" value is empty or not a string',
         },
       },
       {
@@ -4285,7 +4641,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_PHOTO',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "reference" key is empty or not a string',
+          description: 'The "reference" value is empty or not a string',
         },
       },
       {
@@ -4301,7 +4657,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_PHOTO',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "reference" key is empty or not a string',
+          description: 'The "reference" value is empty or not a string',
         },
       },
       {
@@ -4317,7 +4673,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_PHOTO',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "max_width" key is not a number',
+          description: 'The "max_width" value is not a number',
         },
       },
       {
@@ -4333,7 +4689,7 @@ describe('Route handlers', () => {
         responseAction: 'PLACES_PHOTO',
         responseData: {
           status: 'SYNTAX_ERROR',
-          description: 'The "max_height" key is not a number',
+          description: 'The "max_height" value is not a number',
         },
       },
       {

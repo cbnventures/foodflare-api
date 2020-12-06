@@ -11,12 +11,12 @@ const _ = require('lodash');
  * @since 1.0.0
  */
 function checkForAuth(apiHandler, content) {
-  const { type } = content;
+  const { platform } = content;
 
   console.log(`${apiHandler} checkForAuth`, content);
 
-  if (type.match(/^(web|app)$/) === null) {
-    throw new SyntaxError('The "type" key does not match expression');
+  if (platform.match(/^(web|mobile)$/) === null) {
+    throw new SyntaxError('The "platform" value does not match expression');
   }
 
   return content;
@@ -38,11 +38,11 @@ function checkForCoordinates(apiHandler, content) {
   console.log(`${apiHandler} checkForCoordinates`, content);
 
   if (!_.isFinite(latitude)) {
-    throw new SyntaxError('The "latitude" key is not a finite number');
+    throw new SyntaxError('The "latitude" value is not a finite number');
   }
 
   if (!_.isFinite(longitude)) {
-    throw new SyntaxError('The "longitude" key is not a finite number');
+    throw new SyntaxError('The "longitude" value is not a finite number');
   }
 
   if (
@@ -51,7 +51,7 @@ function checkForCoordinates(apiHandler, content) {
     || longitude < -180
     || longitude > 180
   ) {
-    throw new SyntaxError('The "latitude" or "longitude" key has exceeded the allowed value');
+    throw new SyntaxError('The "latitude" or "longitude" value has exceeded the allowed value');
   }
 
   return content;
@@ -73,7 +73,7 @@ function checkForDetails(apiHandler, content) {
   console.log(`${apiHandler} checkForDetails`, content);
 
   if (_.isEmpty(id) || !_.isString(id)) {
-    throw new SyntaxError('The "id" key is empty or not a string');
+    throw new SyntaxError('The "id" value is empty or not a string');
   }
 
   return content;
@@ -97,15 +97,15 @@ function checkForPhoto(apiHandler, content) {
   console.log(`${apiHandler} checkForPhoto`, content);
 
   if (_.isEmpty(reference) || !_.isString(reference)) {
-    throw new SyntaxError('The "reference" key is empty or not a string');
+    throw new SyntaxError('The "reference" value is empty or not a string');
   }
 
   if (!_.isFinite(maxWidth)) {
-    throw new SyntaxError('The "max_width" key is not a number');
+    throw new SyntaxError('The "max_width" value is not a number');
   }
 
   if (!_.isFinite(maxHeight)) {
-    throw new SyntaxError('The "max_height" key is not a number');
+    throw new SyntaxError('The "max_height" value is not a number');
   }
 
   return content;
@@ -127,7 +127,7 @@ function checkForReviews(apiHandler, content) {
   console.log(`${apiHandler} checkForReviews`, content);
 
   if (_.isEmpty(id) || !_.isString(id)) {
-    throw new SyntaxError('The "id" key is empty or not a string');
+    throw new SyntaxError('The "id" value is empty or not a string');
   }
 
   return content;
@@ -156,7 +156,7 @@ function checkForSearch(apiHandler, content) {
   console.log(`${apiHandler} checkForSearch`, content);
 
   if (_.isEmpty(term) || !_.isString(term)) {
-    throw new SyntaxError('The "term" key is empty or not a string');
+    throw new SyntaxError('The "term" value is empty or not a string');
   }
 
   if (!_.isArray(category)
@@ -164,28 +164,29 @@ function checkForSearch(apiHandler, content) {
     || _.some(category, _.isEmpty)
     || _.size(category) < 1
   ) {
-    throw new SyntaxError('The "category" key is not a string[] or wrong size');
+    throw new SyntaxError('The "category" value is not a string[] or wrong size');
   }
 
   if (sort.match(/^(distance|least_expensive|most_reviewed)$/) === null) {
-    throw new SyntaxError('The "sort" key does not match expression');
+    throw new SyntaxError('The "sort" value does not match expression');
   }
 
   if (
     !_.isArray(price)
     || !_.every(price, _.isFinite)
+    || !_.every(price, (number) => number >= 1 && number <= 4)
     || _.size(price) < 1
     || _.size(price) > 4
   ) {
-    throw new SyntaxError('The "price" key is not a finite number[] or wrong size');
+    throw new SyntaxError('The "price" value format is invalid');
   }
 
   if (!_.isFinite(minRating)) {
-    throw new SyntaxError('The "min_rating" key is not a number');
+    throw new SyntaxError('The "min_rating" value is not a number');
   }
 
   if (!_.isBoolean(openNow)) {
-    throw new SyntaxError('The "open_now" key is not a boolean');
+    throw new SyntaxError('The "open_now" value is not a boolean');
   }
 
   return content;

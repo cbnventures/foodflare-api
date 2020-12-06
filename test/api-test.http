@@ -3,7 +3,7 @@ X-Api-Key: {{api_key}}
 Origin: foodflare.app
 
 {
-  "type": "app"
+  "platform": "mobile"
 }
 
 > {% client.global.set("auth_token", response.body['info']['token']); %}

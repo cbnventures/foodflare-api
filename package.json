@@ -1,7 +1,7 @@
 {
     "name": "foodflare-api",
     "displayName": "FoodFlare API",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A food-finder API gateway designed for the FoodFlare app",
     "main": "index.js",
     "private": true,
@@ -58,7 +58,7 @@
     },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.64",
-        "@types/node": "^13.13.33",
+        "@types/node": "^13.13.34",
         "@typescript-eslint/eslint-plugin": "^2.34.0",
         "@typescript-eslint/parser": "^2.34.0",
         "aws-lambda": "^1.0.6",

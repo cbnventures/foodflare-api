@@ -30,7 +30,10 @@ dotenv.config();
  * @since 1.0.0
  */
 function fetchGoogleGeocode(apiHandler, content) {
-  const { latitude, longitude } = content;
+  const {
+    latitude,
+    longitude,
+  } = content;
 
   return axios.get(
     'https://maps.googleapis.com/maps/api/geocode/json',
@@ -77,7 +80,16 @@ function fetchGoogleGeocode(apiHandler, content) {
         'country',
       ];
 
-      return _.pick(theAddress, theModel);
+      // Picked object properties.
+      const picked = _.pick(theAddress, theModel);
+
+      return _.merge({
+        neighborhood: '',
+        sublocality_level_1: '',
+        locality: '',
+        administrative_area_level_1: '',
+        country: '',
+      }, picked);
     })
     .catch((error) => {
       console.error(`${apiHandler} fetchGoogleGeocode`, error);
@@ -97,7 +109,11 @@ function fetchGoogleGeocode(apiHandler, content) {
  * @since 1.0.0
  */
 function fetchGooglePlacesDetails(apiHandler, content) {
-  const { id, latitude, longitude } = content;
+  const {
+    id,
+    latitude,
+    longitude,
+  } = content;
 
   return axios.get(
     'https://maps.googleapis.com/maps/api/place/details/json',
@@ -121,22 +137,22 @@ function fetchGooglePlacesDetails(apiHandler, content) {
       return response.data;
     })
     .then((responseData) => {
-      const theResult = _.get(responseData, 'result', {});
-      const theFormattedAddress = _.get(theResult, 'formatted_address', '');
-      const theFormattedPhoneNumber = _.get(theResult, 'formatted_phone_number', '');
-      const theGeometryLocationLat = _.get(theResult, 'geometry.location.lat', 0);
-      const theGeometryLocationLng = _.get(theResult, 'geometry.location.lng', 0);
-      const theInternationalPhoneNumber = _.get(theResult, 'international_phone_number', '');
-      const theName = _.get(theResult, 'name', '');
-      const theOpeningHours = _.get(theResult, 'opening_hours', {});
-      const thePhotos = _.get(theResult, 'photos', []);
-      const thePlaceId = _.get(theResult, 'place_id', '');
-      const thePriceLevel = _.get(theResult, 'price_level', 0);
-      const theRating = _.get(theResult, 'rating', 1.0);
-      const theReviews = _.get(theResult, 'reviews', []);
-      const theTypes = _.get(theResult, 'types', []);
-      const theUrl = _.get(theResult, 'url', '');
-      const theUserRatingsTotal = _.get(theResult, 'user_ratings_total', 0);
+      const theResult = _.defaultTo(_.get(responseData, 'result'), {});
+      const theFormattedAddress = _.defaultTo(_.get(theResult, 'formatted_address'), '');
+      const theFormattedPhoneNumber = _.defaultTo(_.get(theResult, 'formatted_phone_number'), '');
+      const theGeometryLocationLat = _.defaultTo(_.get(theResult, 'geometry.location.lat'), 0);
+      const theGeometryLocationLng = _.defaultTo(_.get(theResult, 'geometry.location.lng'), 0);
+      const theInternationalPhoneNumber = _.defaultTo(_.get(theResult, 'international_phone_number'), '');
+      const theName = _.defaultTo(_.get(theResult, 'name'), '');
+      const theOpeningHours = _.defaultTo(_.get(theResult, 'opening_hours'), {});
+      const thePhotos = _.defaultTo(_.get(theResult, 'photos'), []);
+      const thePlaceId = _.defaultTo(_.get(theResult, 'place_id'), '');
+      const thePriceLevel = _.defaultTo(_.get(theResult, 'price_level'), 0);
+      const theRating = _.defaultTo(_.get(theResult, 'rating'), 0);
+      const theReviews = _.defaultTo(_.get(theResult, 'reviews'), []);
+      const theTypes = _.defaultTo(_.get(theResult, 'types'), []);
+      const theUrl = _.defaultTo(_.get(theResult, 'url'), '');
+      const theUserRatingsTotal = _.defaultTo(_.get(theResult, 'user_ratings_total'), 0);
 
       // Re-map data provided by Google.
       return {
@@ -275,18 +291,18 @@ function fetchGooglePlacesSearch(apiHandler, content) {
       return response.data;
     })
     .then((responseData) => {
-      const theResults = _.get(responseData, 'results', []);
+      const theResults = _.defaultTo(_.get(responseData, 'results'), []);
       const theFilteredResults = _.filter(theResults, (result) => result.rating >= minRating);
 
       // Re-map data provided by Google.
       const theNewResults = _.map(theFilteredResults, (theFilteredResult) => {
-        const theGeometryLocationLat = _.get(theFilteredResult, 'geometry.location.lat', 0);
-        const theGeometryLocationLng = _.get(theFilteredResult, 'geometry.location.lng', 0);
-        const theName = _.get(theFilteredResult, 'name', '');
-        const thePlaceId = _.get(theFilteredResult, 'place_id', '');
-        const thePriceLevel = _.get(theFilteredResult, 'price_level', 0);
-        const theRating = _.get(theFilteredResult, 'rating', 1.0);
-        const theUserRatingsTotal = _.get(theFilteredResult, 'user_ratings_total', 0);
+        const theGeometryLocationLat = _.defaultTo(_.get(theFilteredResult, 'geometry.location.lat'), 0);
+        const theGeometryLocationLng = _.defaultTo(_.get(theFilteredResult, 'geometry.location.lng'), 0);
+        const theName = _.defaultTo(_.get(theFilteredResult, 'name'), '');
+        const thePlaceId = _.defaultTo(_.get(theFilteredResult, 'place_id'), '');
+        const thePriceLevel = _.defaultTo(_.get(theFilteredResult, 'price_level'), 0);
+        const theRating = _.defaultTo(_.get(theFilteredResult, 'rating'), 0);
+        const theUserRatingsTotal = _.defaultTo(_.get(theFilteredResult, 'user_ratings_total'), 0);
 
         return {
           source: 'google',
@@ -328,7 +344,11 @@ function fetchGooglePlacesSearch(apiHandler, content) {
  * @since 1.0.0
  */
 function fetchYelpFusionDetails(apiHandler, content) {
-  const { id, latitude, longitude } = content;
+  const {
+    id,
+    latitude,
+    longitude,
+  } = content;
 
   return axios.get(
     `https://api.yelp.com/v3/businesses/${id}`,
@@ -351,21 +371,21 @@ function fetchYelpFusionDetails(apiHandler, content) {
       return response.data;
     })
     .then((responseData) => {
-      const theId = _.get(responseData, 'id', '');
-      const theName = _.get(responseData, 'name', '');
-      const theUrl = _.get(responseData, 'url', '');
-      const thePhone = _.get(responseData, 'phone', '');
-      const theDisplayPhone = _.get(responseData, 'display_phone', '');
-      const theReviewCount = _.get(responseData, 'review_count', 0);
-      const theCategories = _.get(responseData, 'categories', []);
-      const theRating = _.get(responseData, 'rating', 1.0);
-      const theLocationDisplayAddress = _.get(responseData, 'location.display_address', []);
-      const theCoordinatesLatitude = _.get(responseData, 'coordinates.latitude', 0.0);
-      const theCoordinatesLongitude = _.get(responseData, 'coordinates.longitude', 0.0);
-      const thePhotos = _.get(responseData, 'photos', []);
-      const thePrice = _.get(responseData, 'price', '');
-      const theHours = _.get(responseData, 'hours', []);
-      const theTransactions = _.get(responseData, 'transactions', []);
+      const theId = _.defaultTo(_.get(responseData, 'id'), '');
+      const theName = _.defaultTo(_.get(responseData, 'name'), '');
+      const theUrl = _.defaultTo(_.get(responseData, 'url'), '');
+      const thePhone = _.defaultTo(_.get(responseData, 'phone'), '');
+      const theDisplayPhone = _.defaultTo(_.get(responseData, 'display_phone'), '');
+      const theReviewCount = _.defaultTo(_.get(responseData, 'review_count'), 0);
+      const theCategories = _.defaultTo(_.get(responseData, 'categories'), []);
+      const theRating = _.defaultTo(_.get(responseData, 'rating'), 0);
+      const theLocationDisplayAddress = _.defaultTo(_.get(responseData, 'location.display_address'), []);
+      const theCoordinatesLatitude = _.defaultTo(_.get(responseData, 'coordinates.latitude'), 0);
+      const theCoordinatesLongitude = _.defaultTo(_.get(responseData, 'coordinates.longitude'), 0);
+      const thePhotos = _.defaultTo(_.get(responseData, 'photos'), []);
+      const thePrice = _.defaultTo(_.get(responseData, 'price'), '');
+      const theHours = _.defaultTo(_.get(responseData, 'hours'), []);
+      const theTransactions = _.defaultTo(_.get(responseData, 'transactions'), []);
 
       // Re-map data provided by Yelp.
       return {
@@ -434,14 +454,14 @@ function fetchYelpFusionReviews(apiHandler, content) {
       return response.data;
     })
     .then((responseData) => {
-      const theReviews = _.get(responseData, 'reviews', []);
+      const theReviews = _.defaultTo(_.get(responseData, 'reviews'), []);
       const theNewReviews = _.map(theReviews, (theReview) => {
-        const url = _.get(theReview, 'url', '');
-        const text = _.get(theReview, 'text', '');
-        const rating = _.get(theReview, 'rating', 0);
-        const timeCreated = _.get(theReview, 'time_created', '');
-        const userImageUrl = _.get(theReview, 'user.image_url', '');
-        const userName = _.get(theReview, 'user.name', '');
+        const url = _.defaultTo(_.get(theReview, 'url'), '');
+        const text = _.defaultTo(_.get(theReview, 'text'), '');
+        const rating = _.defaultTo(_.get(theReview, 'rating'), 0);
+        const timeCreated = _.defaultTo(_.get(theReview, 'time_created'), '');
+        const userImageUrl = _.defaultTo(_.get(theReview, 'user.image_url'), '');
+        const userName = _.defaultTo(_.get(theReview, 'user.name'), '');
 
         return {
           text,
@@ -517,18 +537,18 @@ function fetchYelpFusionSearch(apiHandler, content) {
       return response.data;
     })
     .then((responseData) => {
-      const theBusinesses = _.get(responseData, 'businesses', []);
+      const theBusinesses = _.defaultTo(_.get(responseData, 'businesses'), []);
       const theFilteredBusinesses = _.filter(theBusinesses, (result) => result.rating >= minRating);
 
       // Re-map data provided by Yelp.
       const theNewBusinesses = _.map(theFilteredBusinesses, (theFilteredBusiness) => {
-        const theId = _.get(theFilteredBusiness, 'id', '');
-        const theName = _.get(theFilteredBusiness, 'name', '');
-        const theReviewCount = _.get(theFilteredBusiness, 'review_count', 0);
-        const theRating = _.get(theFilteredBusiness, 'rating', 1.0);
-        const theCoordinatesLatitude = _.get(theFilteredBusiness, 'coordinates.latitude', 0.0);
-        const theCoordinatesLongitude = _.get(theFilteredBusiness, 'coordinates.longitude', 0.0);
-        const thePrice = _.get(theFilteredBusiness, 'price', '');
+        const theId = _.defaultTo(_.get(theFilteredBusiness, 'id'), '');
+        const theName = _.defaultTo(_.get(theFilteredBusiness, 'name'), '');
+        const theReviewCount = _.defaultTo(_.get(theFilteredBusiness, 'review_count'), 0);
+        const theRating = _.defaultTo(_.get(theFilteredBusiness, 'rating'), 0);
+        const theCoordinatesLatitude = _.defaultTo(_.get(theFilteredBusiness, 'coordinates.latitude'), 0);
+        const theCoordinatesLongitude = _.defaultTo(_.get(theFilteredBusiness, 'coordinates.longitude'), 0);
+        const thePrice = _.defaultTo(_.get(theFilteredBusiness, 'price'), '');
 
         return {
           source: 'yelp',
