@@ -1,4 +1,4 @@
-// Type definitions for foodflare-api 1.0.1
+// Type definitions for foodflare-api 1.0.2
 // Project: https://github.com/cbnventures/foodflare-api
 // Definitions by: Jacky Liang <https://github.com/mrjackyliang>
 // TypeScript Version: 3.9.7

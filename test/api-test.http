@@ -1,6 +1,5 @@
 POST {{url}}/auth/session
 X-Api-Key: {{api_key}}
-Origin: foodflare.app
 
 {
   "platform": "mobile"
@@ -13,7 +12,6 @@ Origin: foodflare.app
 POST {{url}}/fusion/search
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "term": "food",
@@ -31,7 +29,6 @@ Origin: foodflare.app
 POST {{url}}/fusion/details
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "id": "IT7fmvejMygNXsV71jvZtg",
@@ -44,7 +41,6 @@ Origin: foodflare.app
 POST {{url}}/fusion/reviews
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "id": "IT7fmvejMygNXsV71jvZtg"
@@ -55,7 +51,6 @@ Origin: foodflare.app
 POST {{url}}/geocode/locate
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "latitude": 40.714224,
@@ -67,7 +62,6 @@ Origin: foodflare.app
 POST {{url}}/places/search
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "term": "food",
@@ -85,7 +79,6 @@ Origin: foodflare.app
 POST {{url}}/places/details
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "id": "ChIJ2UmXRmBZwokRMr_Dr9yAykI",
@@ -98,7 +91,6 @@ Origin: foodflare.app
 POST {{url}}/places/photo
 X-Api-Key: {{api_key}}
 Authorization: Bearer {{auth_token}}
-Origin: foodflare.app
 
 {
   "reference": "CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0",

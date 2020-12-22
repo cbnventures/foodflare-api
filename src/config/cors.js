@@ -27,14 +27,5 @@ module.exports = (api) => {
    *
    * @since 1.0.0
    */
-  api.corsOrigin((request) => {
-    const expectedOrigin = /foodflare.app$/;
-    const origin = _.get(request, 'normalizedHeaders.origin');
-
-    if (expectedOrigin.test(origin)) {
-      return origin;
-    }
-
-    return '';
-  });
+  api.corsOrigin(() => '*');
 };

@@ -1,7 +1,7 @@
 {
     "name": "foodflare-api",
     "displayName": "FoodFlare API",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A food-finder API gateway designed for the FoodFlare app",
     "main": "index.js",
     "private": true,
