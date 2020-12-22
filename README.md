@@ -54,7 +54,7 @@ Once you initialize the `.env` file, modify the variables according to the speci
 | `YELP_API_KEY`   | A valid API key to access the Yelp Fusion endpoints.                 |                                                                                                                    |
 
 ### 4. Deploy to Lambda
-Run the command below to deploy the server on to Amazon Web Services. Once deployment is complete, take note of the development URL (`*.amazonaws.com/dev`) and production URL (`*.amazonaws.com/prod`). The URLs will be used for [setting up the API request tests](https://github.com/cbnventures/foodflare-api#6-setup-api-request-tests).
+Run the command below to deploy the server on to Amazon Web Services. Once deployment is complete, take note of the development URL (`*.amazonaws.com/dev`) and production URL (`*.amazonaws.com/prod`). The URLs will be used for [setting up the API request tests](https://github.com/cbnventures/foodflare-api#6-setup-webstorm-http-requests).
 
 ```sh
 npm run create
@@ -90,7 +90,7 @@ For the FoodFlare API to work, follow the directions below to create an API key.
 13. In the sidebar, click __API Keys__
 14. Click either __Development__ or __Production__ under the __API Keys__ list
 15. Click the blue __Show__ link next to __API key__
-16. Copy the API key and store it for use in the [next step](https://github.com/cbnventures/foodflare-api#6-setup-api-request-tests)
+16. Copy the API key and store it for use in the [next step](https://github.com/cbnventures/foodflare-api#6-setup-webstorm-http-requests)
 17. Repeat Steps 13 to 16 for the next API key
 
 ### 6. Setup WebStorm HTTP Requests
