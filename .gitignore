@@ -45,6 +45,5 @@ modules.xml
 ### Project Excludes ###
 .env
 test/*.env.json
-.http
 private.pem
 claudia.json
