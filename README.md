@@ -21,7 +21,7 @@ With FoodFlare re-designed from the bottom up, we've decided to split the old v2
 1. [API Auth Server](https://github.com/cbnventures/foodflare-auth)
 2. API Server
 3. [iOS and Android App](https://github.com/cbnventures/foodflare-app)
-4. [Web Application](https://github.com/cbnventures/foodflare-web)
+4. [Web Preview](https://github.com/cbnventures/foodflare-web)
 
 ## Instructions (Part 2 of 4)
 Once the authentication server is up and running, the next set of instructions will guide you through installing, configuring, and deploying the API server.
